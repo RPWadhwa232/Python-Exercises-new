@@ -1,0 +1,44 @@
+# Function to add two numbers
+def add(a, b):
+    while b != 0:
+        # Carry contains common set bits of a and b
+        carry = a & b
+        # Sum of bits of a and b where at least one of the bits is not set
+        a = a ^ b
+        # Carry is shifted by one so that adding it to a gives the required sum
+        b = carry << 1
+    return a
+
+# Function to multiply two numbers
+def multiply(a, b):
+    result = 0
+    is_negative = (a < 0) ^ (b < 0)  # Determine if result should be negative
+    a, b = abs(a), abs(b)           # Work with absolute values
+
+    while b > 0:
+        # If the least significant bit of b is set, add a to the result
+        if b & 1:
+            result = add(result, a)
+        # Shift a to the left (equivalent to multiplying by 2)
+        a = add(a, a)
+        # Shift b to the right (equivalent to dividing by 2)
+        b >>= 1
+
+    return -result if is_negative else result
+
+# Function to find the exponent
+def exponent(a, b):
+    if b == 0:
+        return 1  # Base case: any number raised to 0 is 1
+    result = 1
+    for _ in range(b):
+        result = multiply(result, a)
+    return result
+
+# Example usage
+x, y = 3, 4
+print("Addition:", add(x, y))       # 3 + 4 = 7
+print("Multiplication:", multiply(x, y))  # 3 * 4 = 12
+print("Exponentiation:", exponent(x, y))  # 3^4 = 81
+
+    
